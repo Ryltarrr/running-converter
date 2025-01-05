@@ -3,6 +3,11 @@
 	let paceSeconds = $state(0);
 
 	let outputSpeed = $derived(((1 * 60) / (paceMinutes + paceSeconds / 60)).toFixed(2));
+	let possibleSeconds = [
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+		26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+		50, 51, 52, 53, 54, 55, 56, 57, 58, 59
+	];
 </script>
 
 <main class="mx-2">
@@ -14,14 +19,11 @@
 
 	<div class="mb-5">
 		<label for="pace-seconds">Secondes</label>
-		<input
-			id="pace-seconds"
-			type="number"
-			min="0"
-			max="59"
-			class="block w-full"
-			bind:value={paceSeconds}
-		/>
+		<select bind:value={paceSeconds} class="block w-full" id="pace-seconds">
+			{#each possibleSeconds as second}
+				<option>{second}</option>
+			{/each}
+		</select>
 	</div>
 
 	<div class="text-xl font-bold text-red-500">Vitesse : {outputSpeed} km/h</div>
