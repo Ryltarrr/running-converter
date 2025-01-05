@@ -2,7 +2,7 @@
 	let paceMinutes = $state(6);
 	let paceSeconds = $state(0);
 
-	let outputSpeed = $derived((1 * 60) / (paceMinutes + paceSeconds / 60));
+	let outputSpeed = $derived(((1 * 60) / (paceMinutes + paceSeconds / 60)).toFixed(2));
 </script>
 
 <main class="mx-2">
