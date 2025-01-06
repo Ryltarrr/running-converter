@@ -10,7 +10,7 @@
 	];
 </script>
 
-<main class="mx-2">
+<main>
 	<h1 class="my-5 text-3xl">Calcul de l'allure</h1>
 	<div class="mb-5">
 		<label for="pace-minutes" class="block">Minutes</label>
