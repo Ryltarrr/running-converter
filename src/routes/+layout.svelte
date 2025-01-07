@@ -4,12 +4,12 @@
 </script>
 
 <div class="mx-2">
-	<nav>
-		<ul>
-			<li><a class="text-blue-800 underline" href="/">Vitesse en Allure</a></li>
-			<li><a class="text-blue-800 underline" href="/speed-to-pace">Allure en Vitesse</a></li>
-			<li><a class="text-blue-800 underline" href="/vma">VMA</a></li>
-		</ul>
+	<nav class="grid">
+		<div class="grid grid-cols-3 gap-4 text-center">
+			<a class="text-xl text-blue-800 underline" href="/">Vitesse en Allure</a>
+			<a class="text-xl text-blue-800 underline" href="/speed-to-pace">Allure en Vitesse</a>
+			<a class="text-xl text-blue-800 underline" href="/vma">VMA</a>
+		</div>
 	</nav>
 	<div>
 		{@render children()}
