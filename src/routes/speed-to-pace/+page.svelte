@@ -1,16 +1,8 @@
 <script>
-	let speed = $state(10);
+	import { getPaceFromSpeed } from '$lib/helpers';
 
-	let outputPace = $derived.by(() => {
-		const parsedSpeed = 60 / speed;
-		const integer = Math.floor(parsedSpeed);
-		const decimal = Math.round((parsedSpeed - integer) * 60);
-		let formattedDecimal = decimal.toString();
-		if (decimal < 10) {
-			formattedDecimal = `0${decimal}`;
-		}
-		return `${integer}:${formattedDecimal}`;
-	});
+	let speed = $state(10);
+	let outputPace = $derived(getPaceFromSpeed(speed));
 </script>
 
 <main>
