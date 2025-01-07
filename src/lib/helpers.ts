@@ -15,3 +15,7 @@ export function getPaceFromSpeed(speed: number | null | undefined): string {
 	let formattedDecimal = decimal.toString().padStart(2, '0');
 	return `${integer}:${formattedDecimal}`;
 }
+
+export function getPercentOfVMA(vma: number, percent: number): number {
+	return vma * (percent / 100);
+}

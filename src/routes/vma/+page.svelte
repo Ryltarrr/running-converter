@@ -1,11 +1,11 @@
 <script>
-	import { getPaceFromSpeed } from '$lib/helpers';
+	import { getPaceFromSpeed, getPercentOfVMA } from '$lib/helpers';
 
 	let vma = $state(0);
 	let percent = $state(100);
-	let outputSpeed = $derived(vma * (percent / 100));
+	let outputSpeed = $derived(getPercentOfVMA(vma, percent));
 	let outputPace = $derived(getPaceFromSpeed(outputSpeed));
-	let steps = [
+	let percentSteps = [
 		5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115,
 		120
 	];
@@ -45,11 +45,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each steps as step}
+			{#each percentSteps as percentStep}
 				<tr>
-					<td>{step}%</td>
-					<td>{getPaceFromSpeed(vma * (step / 100))} min/km</td>
-					<td>{(vma * (step / 100)).toFixed(2)} km/h</td>
+					<td>{percentStep}%</td>
+					<td>{getPaceFromSpeed(getPercentOfVMA(vma, percentStep))} min/km</td>
+					<td>{getPercentOfVMA(vma, percentStep).toFixed(2)} km/h</td>
 				</tr>
 			{/each}
 		</tbody>
