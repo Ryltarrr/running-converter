@@ -8,8 +8,8 @@
 <main>
 	<h1 class="my-5 text-3xl">Calcul de la vitesse</h1>
 	<div class="mb-5">
-		<label for="pace-minutes" class="block">Vitesse</label>
-		<input id="pace-minutes" type="number" class="block w-full" bind:value={speed} />
+		<label for="speed" class="block">Vitesse</label>
+		<input id="speed" type="number" class="block w-full" bind:value={speed} />
 	</div>
 
 	<div class="text-xl font-bold text-red-500">Allure : {outputPace} min/km</div>
