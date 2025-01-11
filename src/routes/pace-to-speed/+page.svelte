@@ -1,5 +1,7 @@
 <script>
-	import { getFormattedSpeedFromPace, possibleSeconds } from '$lib/helpers';
+	import { possibleSeconds } from '$lib/pace';
+	import { getFormattedSpeedFromPace } from '$lib/speed';
+
 	let paceMinutes = $state(6);
 	let paceSeconds = $state(0);
 

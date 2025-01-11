@@ -1,10 +1,7 @@
 <script lang="ts">
-	import {
-		getSpeedFromPace,
-		possibleSeconds,
-		timeToDoDistance,
-		translateDistanceName
-	} from '$lib/helpers';
+	import { timeToDoDistance } from '$lib/distance';
+	import { possibleSeconds } from '$lib/pace';
+	import { getSpeedFromPace } from '$lib/speed';
 
 	let selected = $state<'speed' | 'pace'>('speed');
 	let speed = $state(10);

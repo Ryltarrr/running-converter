@@ -1,5 +1,5 @@
 <script>
-	import { getPaceFromSpeed } from '$lib/helpers';
+	import { getPaceFromSpeed } from '$lib/pace';
 
 	let speed = $state(10);
 	let outputPace = $derived(getPaceFromSpeed(speed));
