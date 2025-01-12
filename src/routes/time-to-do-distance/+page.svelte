@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { timeToDoDistance } from '$lib/distance';
+	import { timeToDoDistance, translateDistanceName } from '$lib/distance';
 	import { possibleSeconds } from '$lib/pace';
 	import { getSpeedFromPace } from '$lib/speed';
 

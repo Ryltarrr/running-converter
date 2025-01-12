@@ -17,10 +17,8 @@
 	function handleInput(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
 		if (!event.target) return;
 		const { value } = event.target as HTMLInputElement;
-		console.log(value);
 		let url = new URL(window.location.toString());
 		url.searchParams.set('speed', value);
-		console.log(url);
 		history.pushState({}, '', url);
 		mas = Number(value);
 	}
