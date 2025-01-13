@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { getPercentOfMAS } from '$lib/mas';
 	import { getPaceFromSpeed } from '$lib/pace';
+	import { saveState } from '$lib/storage';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
-	let mas = $state(data.speed);
+	let mas = $state<number | null>(data.speed);
 	let percent = $state(100);
 	let outputSpeed = $derived(getPercentOfMAS(mas, percent));
 	let outputPace = $derived(getPaceFromSpeed(outputSpeed));
@@ -14,12 +15,24 @@
 		120
 	];
 
+	function getBackgroundColor(percentStep: number) {
+		if (percentStep <= 25) {
+			return 'bg-blue-300';
+		} else if (percentStep <= 50) {
+			return 'bg-green-300';
+		} else if (percentStep <= 75) {
+			return 'bg-yellow-300';
+		} else if (percentStep <= 100) {
+			return 'bg-orange-300';
+		} else {
+			return 'bg-red-300';
+		}
+	}
+
 	function handleInput(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
 		if (!event.target) return;
 		const { value } = event.target as HTMLInputElement;
-		let url = new URL(window.location.toString());
-		url.searchParams.set('speed', value);
-		history.pushState({}, '', url);
+		saveState({ speed: Number(value) });
 		mas = Number(value);
 	}
 </script>
@@ -59,7 +72,7 @@
 		</thead>
 		<tbody>
 			{#each percentSteps as percentStep}
-				<tr>
+				<tr class={getBackgroundColor(percentStep)}>
 					<td>{percentStep}%</td>
 					<td>{getPaceFromSpeed(getPercentOfMAS(mas, percentStep))} min/km</td>
 					<td>{getPercentOfMAS(mas, percentStep).toFixed(2)} km/h</td>
