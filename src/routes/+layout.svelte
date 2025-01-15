@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import '../app.css';
+	import NavBar from '$lib/components/NavBar.svelte';
 	let { children } = $props();
 
 	async function detectSWUpdate() {
@@ -24,17 +25,8 @@
 	});
 </script>
 
-<div class="mx-2">
-	<nav class="grid">
-		<div class="grid grid-cols-4 gap-4 text-center">
-			<a class="text-xl text-blue-800 underline" href="/">Vitesse en Allure</a>
-			<a class="text-xl text-blue-800 underline" href="/speed-to-pace">Allure en Vitesse</a>
-			<a class="text-xl text-blue-800 underline" href="/mas">VMA</a>
-			<a class="text-xl text-blue-800 underline" href="/time-to-do-distance">
-				Temps pour faire une distance
-			</a>
-		</div>
-	</nav>
+<NavBar />
+<div class="container mx-auto px-2">
 	<div>
 		{@render children()}
 	</div>
