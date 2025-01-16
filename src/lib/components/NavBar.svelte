@@ -14,7 +14,7 @@
 	onclick={() => (isOpen = !isOpen)}
 	class="p-2 text-gray-600 hover:text-gray-800 focus:outline-none {isOpen && 'invisible'}"
 >
-	<Menu size={24} />
+	<Menu size={32} />
 </button>
 
 <nav
@@ -28,7 +28,7 @@
 				onclick={() => (isOpen = !isOpen)}
 				class="py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
 			>
-				<X size={24} />
+				<X size={32} />
 			</button>
 			<ul>
 				{#each menuItems as menuItem}
@@ -44,6 +44,16 @@
 				{/each}
 			</ul>
 		</div>
-		<div class="hidden md:block" role="button" onclick={() => (isOpen = false)}></div>
+		<div
+			class="hidden md:block"
+			role="button"
+			tabindex="0"
+			onclick={() => (isOpen = false)}
+			onkeyup={(event) => {
+				if (event.key === 'Escape') {
+					isOpen = false;
+				}
+			}}
+		></div>
 	</div>
 </nav>
