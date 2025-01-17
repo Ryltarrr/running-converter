@@ -1,32 +1,32 @@
 {
-    "name": "Running Converter",
-    "short_name": "Running Converter",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#fefce8",
-    "theme_color": "#fbbf24",
-    "description": "Converter for runners",
-    "icons": [
-        {
-            "src": "pwa-64x64.png",
-            "sizes": "64x64",
-            "type": "image/png"
-        },
-        {
-            "src": "pwa-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "pwa-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
-            "src": "maskable-icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        }
-    ]
+	"name": "Running Converter",
+	"short_name": "Running Converter",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#fefce8",
+	"theme_color": "#fbbf24",
+	"description": "Converter for runners",
+	"icons": [
+		{
+			"src": "pwa-64x64.png",
+			"sizes": "64x64",
+			"type": "image/png"
+		},
+		{
+			"src": "pwa-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "pwa-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "maskable-icon-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		}
+	]
 }

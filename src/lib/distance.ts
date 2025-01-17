@@ -12,7 +12,7 @@ export function timeToDoDistance(
 		return {};
 	}
 
-	let times: StringObject = {
+	const times: StringObject = {
 		'5': getFormattedTime(5 / speed),
 		'10': getFormattedTime(10 / speed),
 		halfMarathon: getFormattedTime(21.1 / speed),
