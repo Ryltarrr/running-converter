@@ -29,6 +29,14 @@ export class Pace implements Unit {
 		}
 	}
 
+	getPercent(percent: number): Pace {
+		if (percent <= 0) {
+			return new Pace(0);
+		}
+
+		return new Pace(this.value * (percent / 100));
+	}
+
 	formatted() {
 		if (this.value <= 0) {
 			return `${Pace.NO_PACE} ${Pace.UNIT}`;

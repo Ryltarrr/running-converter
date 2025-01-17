@@ -22,6 +22,14 @@ export class Speed implements Unit {
 		}
 	}
 
+	getPercent(percent: number): Speed {
+		if (percent <= 0) {
+			return new Speed(0);
+		}
+
+		return new Speed(this.value * (percent / 100));
+	}
+
 	private convertToPace(input: number): Pace {
 		if (input === 0) {
 			return new Pace(0);

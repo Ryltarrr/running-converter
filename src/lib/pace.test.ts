@@ -85,4 +85,20 @@ describe('Pace Class', () => {
 			});
 		});
 	});
+
+	describe('getPercent', () => {
+		test('get 50 percent of pace correctly', () => {
+			expect(Pace.fromMinutesAndSeconds(4, 30).getPercent(50)).toStrictEqual(new Pace(2.25));
+		});
+
+		test('get 0 percent of pace correctly', () => {
+			expect(Pace.fromMinutesAndSeconds(3, 17).getPercent(0)).toStrictEqual(new Pace(0));
+		});
+
+		test('get 120 percent of pace correctly', () => {
+			expect(Pace.fromMinutesAndSeconds(4, 30).getPercent(120)).toStrictEqual(
+				new Pace(5.3999999999999995)
+			);
+		});
+	});
 });

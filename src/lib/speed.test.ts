@@ -50,4 +50,18 @@ describe('Speed Class', () => {
 			expect(speed.convertTo('pace').formatted()).toStrictEqual('0:00 min/km');
 		});
 	});
+
+	describe('getPercent', () => {
+		test('get 50 percent of speed correctly', () => {
+			expect(new Speed(12).getPercent(50)).toStrictEqual(new Speed(6));
+		});
+
+		test('get 0 percent of speed correctly', () => {
+			expect(new Speed(17).getPercent(0)).toStrictEqual(new Speed(0));
+		});
+
+		test('get 120 percent of pace correctly', () => {
+			expect(new Speed(15).getPercent(120)).toStrictEqual(new Speed(18));
+		});
+	});
 });

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { Speed } from '$lib/speed';
-	import { Pace } from '$lib/pace';
-	import { getPercentOfMAS } from '$lib/mas';
 	import { saveState } from '$lib/storage';
 	import type { PageData } from './$types';
 
@@ -9,8 +7,9 @@
 
 	let mas = $state<number | null>(data.speed);
 	let percent = $state(100);
-	let outputSpeed = $derived(getPercentOfMAS(mas, percent));
-	let outputPace = $derived(new Pace(outputSpeed).formatted());
+	let speed = $derived(new Speed(mas ?? 0));
+	let outputSpeed = $derived(speed.getPercent(percent).formatted());
+	let outputPace = $derived(speed.convertTo('pace').getPercent(percent).formatted());
 	let percentSteps = [
 		5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115,
 		120
@@ -58,7 +57,7 @@
 		/>
 	</div>
 
-	<div class="text-xl font-bold text-red-500">Vitesse : {outputSpeed.toFixed(1)} km/h</div>
+	<div class="text-xl font-bold text-red-500">Vitesse : {outputSpeed}</div>
 	<div class="text-xl font-bold text-red-500">Allure : {outputPace}</div>
 
 	<h1 class="my-5 text-2xl">Tableau VMA</h1>
@@ -75,8 +74,8 @@
 			{#each percentSteps as percentStep}
 				<tr class={getBackgroundColor(percentStep)}>
 					<td>{percentStep}%</td>
-					<td>{new Speed(getPercentOfMAS(mas, percentStep)).convertTo('pace').formatted()}</td>
-					<td>{getPercentOfMAS(mas, percentStep).toFixed(2)} km/h</td>
+					<td>{speed.getPercent(percentStep).convertTo('pace').formatted()}</td>
+					<td>{speed.getPercent(percentStep).formatted()}</td>
 				</tr>
 			{/each}
 		</tbody>
