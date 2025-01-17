@@ -1,18 +1,18 @@
 <script>
-	import { getPaceFromSpeed } from '$lib/pace';
+	import { Speed } from '$lib/speed';
 
-	let speed = $state(10);
-	let outputPace = $derived(getPaceFromSpeed(speed));
+	let inputSpeed = $state(10);
+	let outputPace = $derived(new Speed(inputSpeed ?? 0).convertTo('pace').formatted());
 </script>
 
 <main>
 	<h1 class="my-5 text-3xl">Calcul de la vitesse</h1>
 	<div class="mb-5">
 		<label for="speed" class="block">Vitesse</label>
-		<input id="speed" type="number" class="block w-full" bind:value={speed} />
+		<input id="speed" type="number" class="block w-full" bind:value={inputSpeed} />
 	</div>
 
-	<div class="text-xl font-bold text-red-500">Allure : {outputPace} min/km</div>
+	<div class="text-xl font-bold text-red-500">Allure : {outputPace}</div>
 
 	<p class="mt-5">
 		L'allure et la vitesse sont étroitement liées mais ne cherchent pas à exprimer la même chose. La

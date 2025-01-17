@@ -1,16 +1,17 @@
 <script lang="ts">
+	import { Pace } from '$lib/pace';
 	import { timeToDoDistance, translateDistanceName } from '$lib/distance';
 	import { possibleSeconds } from '$lib/pace';
-	import { getSpeedFromPace } from '$lib/speed';
 
 	let selected = $state<'speed' | 'pace'>('speed');
-	let speed = $state(10);
+	let speed = $state(12);
 	let paceMinutes = $state(6);
 	let paceSeconds = $state(0);
 	let customDistance = $state<number | null>(null);
 	let times = $derived.by(() => {
 		if (selected !== 'speed') {
-			return timeToDoDistance(getSpeedFromPace(paceMinutes, paceSeconds), customDistance);
+			const pace = Pace.fromMinutesAndSeconds(paceMinutes, paceSeconds);
+			return timeToDoDistance(pace.convertTo('speed').value, customDistance);
 		} else {
 			return timeToDoDistance(speed, customDistance);
 		}

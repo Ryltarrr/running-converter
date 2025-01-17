@@ -1,11 +1,13 @@
 <script>
 	import { possibleSeconds } from '$lib/pace';
-	import { getFormattedSpeedFromPace } from '$lib/speed';
+	import { Pace } from '$lib/pace';
 
 	let paceMinutes = $state(6);
 	let paceSeconds = $state(0);
 
-	let outputSpeed = $derived(getFormattedSpeedFromPace(paceMinutes, paceSeconds));
+	let outputSpeed = $derived(
+		Pace.fromMinutesAndSeconds(paceMinutes, paceSeconds).convertTo('speed').formatted()
+	);
 </script>
 
 <main>
@@ -24,7 +26,7 @@
 		</select>
 	</div>
 
-	<div class="text-xl font-bold text-red-500">Vitesse : {outputSpeed} km/h</div>
+	<div class="text-xl font-bold text-red-500">Vitesse : {outputSpeed}</div>
 
 	<p class="mt-5">
 		L'allure et la vitesse sont étroitement liées mais ne cherchent pas à exprimer la même chose. La

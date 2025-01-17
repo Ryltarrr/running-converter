@@ -1,4 +1,5 @@
-export const NO_PACE = '-:-';
+import { Speed } from './speed';
+import type { Unit, ConversionDataUnit } from './unit';
 
 export const possibleSeconds = [
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
@@ -6,13 +7,44 @@ export const possibleSeconds = [
 	51, 52, 53, 54, 55, 56, 57, 58, 59
 ];
 
-export function getPaceFromSpeed(speed: number | null | undefined): string {
-	if (typeof speed !== 'number' || speed <= 0) {
-		return NO_PACE;
+export class Pace implements Unit {
+	static readonly NO_PACE = '0:00';
+	static readonly UNIT = 'min/km';
+	value: number;
+
+	constructor(value: number) {
+		this.value = value;
 	}
-	const parsedSpeed = 60 / speed;
-	const integer = Math.floor(parsedSpeed);
-	const decimal = Math.round((parsedSpeed - integer) * 60);
-	let formattedDecimal = decimal.toString().padStart(2, '0');
-	return `${integer}:${formattedDecimal}`;
+
+	static fromMinutesAndSeconds(minutes: number, seconds: number) {
+		return new Pace(minutes + seconds / 60);
+	}
+
+	convertTo(outputUnit: ConversionDataUnit): Unit {
+		switch (outputUnit) {
+			case 'speed':
+				return this.convertToSpeed();
+			default:
+				return this;
+		}
+	}
+
+	formatted() {
+		if (this.value <= 0) {
+			return `${Pace.NO_PACE} ${Pace.UNIT}`;
+		}
+		const minutes = Math.floor(this.value);
+		const seconds = Math.round((this.value - minutes) * 60)
+			.toString()
+			.padStart(2, '0');
+		return `${minutes}:${seconds} ${Pace.UNIT}`;
+	}
+
+	private convertToSpeed(): Speed {
+		if (this.value === 0) {
+			return new Speed(0);
+		}
+
+		return new Speed((1 * 60) / this.value);
+	}
 }

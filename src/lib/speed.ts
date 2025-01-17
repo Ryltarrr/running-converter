@@ -1,16 +1,32 @@
-export function getSpeedFromPace(paceMinutes: number | null, paceSeconds: number | null): number {
-	paceMinutes = paceMinutes ?? 0;
-	paceSeconds = paceSeconds ?? 0;
+import { Pace } from './pace';
+import type { ConversionDataUnit, Unit } from './unit';
 
-	if (paceMinutes + paceSeconds <= 0) {
-		return 0;
+export class Speed implements Unit {
+	static readonly UNIT = 'km/h';
+	value: number;
+
+	constructor(value: number) {
+		this.value = value;
 	}
-	return (1 * 60) / (paceMinutes + paceSeconds / 60);
-}
 
-export function getFormattedSpeedFromPace(
-	paceMinutes: number | null,
-	paceSeconds: number | null
-): string {
-	return getSpeedFromPace(paceMinutes, paceSeconds).toFixed(1).toLocaleLowerCase();
+	formatted(): string {
+		return this.value.toFixed(1) + ' ' + Speed.UNIT;
+	}
+
+	convertTo(outputUnit: ConversionDataUnit): Unit {
+		switch (outputUnit) {
+			case 'pace':
+				return this.convertToPace(this.value);
+			default:
+				return this;
+		}
+	}
+
+	private convertToPace(input: number): Pace {
+		if (input === 0) {
+			return new Pace(0);
+		}
+
+		return new Pace(60 / input);
+	}
 }
