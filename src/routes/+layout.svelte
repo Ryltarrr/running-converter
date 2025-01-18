@@ -25,9 +25,9 @@
 	});
 </script>
 
-<NavBar />
-<div class="container mx-auto px-2">
+<div class="container mx-auto mb-12 px-2">
 	<div>
 		{@render children()}
 	</div>
 </div>
+<NavBar />

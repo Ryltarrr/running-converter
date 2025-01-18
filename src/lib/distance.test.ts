@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { RunDuration, timeToDoDistance, translateDistanceName } from './distance';
+import { timeToDoDistance, translateDistanceName } from './distance';
 import { Speed } from './speed';
 
 describe('timeToDoDistance', () => {
