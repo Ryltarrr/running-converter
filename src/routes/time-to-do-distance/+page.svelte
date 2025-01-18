@@ -2,6 +2,7 @@
 	import { Pace } from '$lib/pace';
 	import { timeToDoDistance, translateDistanceName } from '$lib/distance';
 	import { possibleSeconds } from '$lib/pace';
+	import { Speed } from '$lib/speed';
 
 	let selected = $state<'speed' | 'pace'>('speed');
 	let speed = $state(12);
@@ -11,9 +12,9 @@
 	let times = $derived.by(() => {
 		if (selected !== 'speed') {
 			const pace = Pace.fromMinutesAndSeconds(paceMinutes, paceSeconds);
-			return timeToDoDistance(pace.convertTo('speed').value, customDistance);
+			return timeToDoDistance(pace.convertTo('speed') as Speed, customDistance);
 		} else {
-			return timeToDoDistance(speed, customDistance);
+			return timeToDoDistance(new Speed(speed), customDistance);
 		}
 	});
 </script>

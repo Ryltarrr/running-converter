@@ -1,3 +1,8 @@
+import type { Speed } from './speed';
+type RaceTimes = {
+	[key in 'marathon' | 'halfMarathon' | '10' | '5']: string;
+};
+
 type StringObject = {
 	[key: string]: string;
 };
@@ -5,25 +10,26 @@ type StringObject = {
 const KM_SUFFIX = ' km';
 
 export function timeToDoDistance(
-	speed: number | null,
+	speed: Speed | null,
 	distance: number | null = null
 ): StringObject {
-	if (speed === null || speed <= 0) {
+	if (speed === null || speed.value <= 0) {
 		return {};
 	}
 
-	const times: StringObject = {
-		'5': getFormattedTime(5 / speed),
-		'10': getFormattedTime(10 / speed),
-		halfMarathon: getFormattedTime(21.1 / speed),
-		marathon: getFormattedTime(42.2 / speed)
+	const times: RaceTimes = {
+		'5': getFormattedTime(5 / speed.value),
+		'10': getFormattedTime(10 / speed.value),
+		halfMarathon: getFormattedTime(21.1 / speed.value),
+		marathon: getFormattedTime(42.2 / speed.value)
 	};
 
 	if (distance !== null) {
-		times[distance.toString() + KM_SUFFIX] = getFormattedTime(distance / speed);
+		const customDistanceKey = distance.toString() + KM_SUFFIX;
+		return { ...times, [customDistanceKey]: getFormattedTime(distance / speed.value) };
+	} else {
+		return times;
 	}
-
-	return times;
 }
 
 export function translateDistanceName(distance: string): string {
