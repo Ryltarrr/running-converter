@@ -6,10 +6,7 @@
 	let { data }: { data: PageData } = $props();
 
 	let mas = $state<number | null>(data.speed);
-	let percent = $state(100);
 	let speed = $derived(new Speed(mas ?? 0));
-	let outputSpeed = $derived(speed.getPercent(percent).formatted());
-	let outputPace = $derived(speed.convertTo('pace').getPercent(percent).formatted());
 	let percentSteps = [
 		5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115,
 		120
@@ -38,29 +35,11 @@
 </script>
 
 <main>
-	<h1 class="my-5 text-3xl">Calcul à partir de la VMA</h1>
+	<h1 class="my-5 text-3xl">Tableau VMA</h1>
 	<div class="mb-5">
-		<label for="mas" class="block">VMA</label>
+		<label for="mas" class="block">VMA (km/h)</label>
 		<input id="mas" type="number" class="block w-full" value={mas} oninput={handleInput} />
 	</div>
-
-	<div class="mb-5">
-		<label for="pace-minutes" class="block">Pourcentage</label>
-		<input
-			id="pace-minutes"
-			type="number"
-			min="5"
-			max="120"
-			step="5"
-			class="block w-full"
-			bind:value={percent}
-		/>
-	</div>
-
-	<div class="text-xl font-bold text-red-500">Vitesse : {outputSpeed}</div>
-	<div class="text-xl font-bold text-red-500">Allure : {outputPace}</div>
-
-	<h1 class="my-5 text-2xl">Tableau VMA</h1>
 
 	<table class="w-full table-auto">
 		<thead>

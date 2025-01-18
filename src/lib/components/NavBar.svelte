@@ -5,7 +5,7 @@
 	const menuItems = [
 		{ label: 'Convertisseur', link: '/' },
 		{ label: 'VMA', link: '/mas' },
-		{ label: 'Temps pour faire une distance', link: '/time-to-do-distance' }
+		{ label: 'Estimation de course', link: '/race-predictor' }
 	];
 </script>
 
@@ -16,7 +16,7 @@
 				{#each menuItems as menuItem}
 					<li>
 						<a
-							class="block text-xl text-gray-800 hover:underline"
+							class="block text-xl text-gray-900 hover:underline"
 							onclick={() => (isOpen = false)}
 							href={menuItem.link}
 						>
@@ -28,10 +28,7 @@
 		</div>
 	</nav>
 	<div class="flex justify-end border-t">
-		<button
-			onclick={() => (isOpen = !isOpen)}
-			class="p-2 text-gray-900 hover:text-gray-800 focus:outline-none"
-		>
+		<button onclick={() => (isOpen = !isOpen)} class="p-2 text-gray-900 focus:outline-none">
 			{#if isOpen}
 				<X size={32} />
 			{:else}
