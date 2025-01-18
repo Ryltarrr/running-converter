@@ -2,5 +2,5 @@ import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = () => {
-	redirect(302, '/pace-to-speed');
+	redirect(302, '/converter');
 };

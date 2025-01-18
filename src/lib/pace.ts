@@ -41,11 +41,17 @@ export class Pace implements Unit {
 		if (this.value <= 0) {
 			return `${Pace.NO_PACE} ${Pace.UNIT}`;
 		}
+		const { minutes, seconds } = this.asMinutesAndSeconds();
+		return `${minutes}:${seconds.toString().padStart(2, '0')} ${Pace.UNIT}`;
+	}
+
+	asMinutesAndSeconds(): { minutes: number; seconds: number } {
 		const minutes = Math.floor(this.value);
-		const seconds = Math.round((this.value - minutes) * 60)
-			.toString()
-			.padStart(2, '0');
-		return `${minutes}:${seconds} ${Pace.UNIT}`;
+		const seconds = Math.round((this.value - minutes) * 60);
+		return {
+			minutes,
+			seconds
+		};
 	}
 
 	private convertToSpeed(): Speed {

@@ -3,8 +3,7 @@
 	let isOpen = $state(false);
 
 	const menuItems = [
-		{ label: 'Vitesse en Allure', link: '/' },
-		{ label: 'Allure en Vitesse', link: '/speed-to-pace' },
+		{ label: 'Convertisseur', link: '/' },
 		{ label: 'VMA', link: '/mas' },
 		{ label: 'Temps pour faire une distance', link: '/time-to-do-distance' }
 	];
