@@ -22,15 +22,15 @@
 		? 'translate-x-0 opacity-100'
 		: 'pointer-events-none -translate-x-8 opacity-0'}"
 >
-	<div class="grid h-full opacity-100 md:grid-cols-2">
-		<div class="h-full bg-white px-2 shadow-lg">
+	<div class="grid h-full grid-cols-3 opacity-100">
+		<div class="col-span-2 h-full bg-white px-2 shadow-lg md:col-span-1">
 			<button
 				onclick={() => (isOpen = !isOpen)}
 				class="py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
 			>
 				<X size={32} />
 			</button>
-			<ul>
+			<ul class="grid grid-cols-1 gap-3">
 				{#each menuItems as menuItem}
 					<li>
 						<a
@@ -45,7 +45,7 @@
 			</ul>
 		</div>
 		<div
-			class="hidden md:block"
+			class="md:col-span-2"
 			role="button"
 			tabindex="0"
 			onclick={() => (isOpen = false)}
