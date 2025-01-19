@@ -1,61 +1,56 @@
 <script lang="ts">
-	import { Pace } from '$lib/pace';
-	import { timeToDoDistance, translateDistanceName } from '$lib/distance';
-	import { possibleSeconds } from '$lib/pace';
-	import { Speed } from '$lib/speed';
+	import { DEFAULT_DISTANCES, riegelTimes, translateDistanceName } from '$lib/distance';
 
-	let selected = $state<'speed' | 'pace'>('speed');
-	let speed = $state(12);
-	let paceMinutes = $state(6);
-	let paceSeconds = $state(0);
-	let customDistance = $state<number | null>(null);
+	let time = $state<null | string>(null);
+	let knownDistance = $state<null | number>(null);
+	let targetDistance = $state<null | number>(null);
+
 	let times = $derived.by(() => {
-		if (selected !== 'speed') {
-			const pace = Pace.fromMinutesAndSeconds(paceMinutes, paceSeconds);
-			return timeToDoDistance(pace.convertTo('speed') as Speed, customDistance);
-		} else {
-			return timeToDoDistance(new Speed(speed), customDistance);
-		}
+		return riegelTimes(knownDistance, time, targetDistance);
 	});
 </script>
 
 <main>
-	<h1 class="my-5 text-3xl">Temps pour faire une distance</h1>
+	<h1 class="my-5 text-3xl">Estimation de course</h1>
+	<details class="mb-5">
+		<summary class="font-semibold">Explications</summary>
+		<p class="border-l-2 border-l-gray-900 pl-2">
+			Saisissez votre temps sur une distance connue pour estimer vos temps sur des distances de
+			course ou bien une distance personnalisée. Ces estimations utilisent la <a
+				href="https://en.wikipedia.org/wiki/Peter_Riegel#Race_time_prediction"
+				target="_blank"
+				class="text-blue-800 underline">formule de Riegel</a
+			>.
+		</p>
+	</details>
+
 	<div class="mb-5">
-		<div>
-			<input type="radio" id="red" value="speed" bind:group={selected} />
-			<label for="red">Vitesse</label>
-		</div>
-		<div>
-			<input type="radio" id="blue" value="pace" bind:group={selected} />
-			<label for="blue">Allure</label>
+		<label for="time" class="block">Temps</label>
+		<input id="time" type="time" class="block w-full" bind:value={time} />
+	</div>
+
+	<div class="mb-5">
+		<label for="distance" class="block">Distance (km)</label>
+		<input id="distance" type="number" class="block w-full" bind:value={knownDistance} />
+		<div class="mt-1 flex gap-x-3 text-sm font-medium">
+			{#each Object.entries(DEFAULT_DISTANCES) as [distanceName, distanceValue]}
+				<button onclick={() => (knownDistance = distanceValue)}>
+					{translateDistanceName(distanceName)}
+				</button>
+			{/each}
 		</div>
 	</div>
 
-	{#if selected === 'speed'}
-		<div class="mb-5">
-			<label for="speed" class="block">Vitesse</label>
-			<input id="speed" type="number" class="block w-full" bind:value={speed} />
-		</div>
-	{:else}
-		<div class="mb-5">
-			<label for="pace-minutes" class="block">Minutes</label>
-			<input id="pace-minutes" type="number" class="block w-full" bind:value={paceMinutes} />
-		</div>
-
-		<div class="mb-5">
-			<label for="pace-seconds">Secondes</label>
-			<select bind:value={paceSeconds} class="block w-full" id="pace-seconds">
-				{#each possibleSeconds as second}
-					<option>{second}</option>
-				{/each}
-			</select>
-		</div>
-	{/if}
-
 	<div class="mb-5">
-		<label for="custom-distance" class="block">Distance en km</label>
-		<input id="custom-distance" type="number" class="block w-full" bind:value={customDistance} />
+		<label for="distance" class="block">Distance cible (km)</label>
+		<input id="distance" type="number" class="block w-full" bind:value={targetDistance} />
+		<div class="mt-1 flex gap-x-3 text-sm font-medium">
+			{#each Object.entries(DEFAULT_DISTANCES) as [distanceName, distanceValue]}
+				<button onclick={() => (targetDistance = distanceValue)}>
+					{translateDistanceName(distanceName)}
+				</button>
+			{/each}
+		</div>
 	</div>
 
 	<table class="w-full table-auto">
@@ -68,7 +63,7 @@
 		<tbody>
 			{#each Object.entries(times) as [distance, time]}
 				<tr>
-					<td>{translateDistanceName(distance)}</td>
+					<td>{distance}</td>
 					<td>{time}</td>
 				</tr>
 			{:else}

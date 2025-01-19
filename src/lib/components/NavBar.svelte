@@ -10,7 +10,7 @@
 </script>
 
 <div class="fixed bottom-0 left-0 right-0 h-fit bg-white shadow-lg shadow-gray-500">
-	<nav class="p-2 {isOpen ? '' : 'hidden'}">
+	<nav class="p-4 {isOpen ? '' : 'hidden'}">
 		<div class="px-2">
 			<ul class="grid grid-cols-1 gap-2">
 				{#each menuItems as menuItem}

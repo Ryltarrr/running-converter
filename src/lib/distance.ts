@@ -9,6 +9,13 @@ type StringObject = {
 
 const KM_SUFFIX = ' km';
 
+export const DEFAULT_DISTANCES = {
+	'5': 5,
+	'10': 10,
+	halfMarathon: 21.0975,
+	marathon: 42.195
+};
+
 export function timeToDoDistance(
 	speed: Speed | null,
 	distance: number | null = null
@@ -32,6 +39,37 @@ export function timeToDoDistance(
 	}
 }
 
+function riegelFormula(knownDistance: number, knownTime: HoursAndMinutes, targetDistance: number) {
+	const { hours, minutes } = knownTime;
+	const decimalHours = hours + minutes / 60;
+	return decimalHours * Math.pow(targetDistance / knownDistance, 1.06);
+}
+
+export function riegelTimes(
+	knownDistance: number | null,
+	knownTimeInput: string | null,
+	targetDistance: number | null
+): StringObject {
+	const res: StringObject = {};
+	if (knownDistance === null || knownTimeInput === null) {
+		return {};
+	}
+	const knownTime = parseTimeInput(knownTimeInput);
+	for (const [distanceName, distance] of Object.entries(DEFAULT_DISTANCES)) {
+		res[translateDistanceName(distanceName)] = getFormattedTime(
+			riegelFormula(knownDistance, knownTime, distance)
+		);
+	}
+
+	if (targetDistance !== null && !Object.values(DEFAULT_DISTANCES).includes(targetDistance)) {
+		res[translateDistanceName(targetDistance.toString())] = getFormattedTime(
+			riegelFormula(knownDistance, knownTime, targetDistance)
+		);
+	}
+
+	return res;
+}
+
 export function translateDistanceName(distance: string): string {
 	if (!isNaN(Number(distance))) {
 		return distance + KM_SUFFIX;
@@ -47,7 +85,10 @@ export function translateDistanceName(distance: string): string {
 	}
 }
 
-function getFormattedTime(decimalHours: number): string {
+/**
+ *  Format a decimal time into and hh:mm:ss string
+ */
+export function getFormattedTime(decimalHours: number): string {
 	const hours = Math.floor(decimalHours);
 	const hoursDecimal = decimalHours - hours;
 	const minutes = Math.floor(hoursDecimal * 60);
@@ -65,4 +106,19 @@ function getFormattedTime(decimalHours: number): string {
 	const formattedSeconds = adjustedSeconds.toString().padStart(2, '0');
 
 	return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+}
+
+type HoursAndMinutes = {
+	hours: number;
+	minutes: number;
+};
+
+/**
+ * Parse an html time input value hh:mm into hours and minutes
+ */
+export function parseTimeInput(inputTime: string): HoursAndMinutes {
+	const splitted = inputTime.split(':');
+	const hours = Number(splitted?.[0]);
+	const minutes = Number(splitted?.[1]);
+	return { hours, minutes };
 }
