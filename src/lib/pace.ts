@@ -1,3 +1,4 @@
+import { parseTimeInput } from './distance';
 import { Speed } from './speed';
 import type { Unit, ConversionDataUnit } from './unit';
 
@@ -52,6 +53,16 @@ export class Pace implements Unit {
 			minutes,
 			seconds
 		};
+	}
+
+	static fromDistanceAndTime(distanceInKilometers: number | null, timeInput: string | null): Pace {
+		if (distanceInKilometers === null || timeInput === null) {
+			return new Pace(0);
+		}
+
+		const parsedTime = parseTimeInput(timeInput);
+		const totalTimeInMinutes = parsedTime.hours * 60 + parsedTime.minutes;
+		return new Pace(totalTimeInMinutes / distanceInKilometers);
 	}
 
 	private convertToSpeed(): Speed {

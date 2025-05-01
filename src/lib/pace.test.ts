@@ -1,6 +1,7 @@
 import { test, describe, expect } from 'vitest';
 import { Pace } from './pace';
 import { Speed } from './speed';
+import { parseTimeInput } from './distance';
 
 describe('Pace Class', () => {
 	describe('fromMinutesAndSeconds', () => {
@@ -99,6 +100,90 @@ describe('Pace Class', () => {
 			expect(Pace.fromMinutesAndSeconds(4, 30).getPercent(120)).toStrictEqual(
 				new Pace(5.3999999999999995)
 			);
+		});
+	});
+
+	describe('fromDistanceAndTime', () => {
+		test('calculates pace correctly for a standard distance and time (hh:mm)', () => {
+			const distanceInKilometers = 10; // 10 km
+			const timeInput = '00:50'; // 50 minutes
+			const parsedTime = parseTimeInput(timeInput);
+			const totalTimeInMinutes = parsedTime.hours * 60 + parsedTime.minutes;
+			const expectedPaceValue = totalTimeInMinutes / distanceInKilometers;
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)).toStrictEqual(
+				new Pace(expectedPaceValue)
+			);
+		});
+
+		test('calculates pace correctly for a shorter distance and time (hh:mm)', () => {
+			const distanceInKilometers = 5; // 5 km
+			const timeInput = '00:25'; // 25 minutes
+			const parsedTime = parseTimeInput(timeInput);
+			const totalTimeInMinutes = parsedTime.hours * 60 + parsedTime.minutes;
+			const expectedPaceValue = totalTimeInMinutes / distanceInKilometers;
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)).toStrictEqual(
+				new Pace(expectedPaceValue)
+			);
+		});
+
+		test('calculates pace correctly for a longer distance and time with hours (hh:mm)', () => {
+			const distanceInKilometers = 21.0975; // Half Marathon distance
+			const timeInput = '01:30'; // 1 hour 30 minutes (90 minutes)
+			const parsedTime = parseTimeInput(timeInput);
+			const totalTimeInMinutes = parsedTime.hours * 60 + parsedTime.minutes;
+			const expectedPaceValue = totalTimeInMinutes / distanceInKilometers;
+			// Using toBeCloseTo for floating point comparison
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput).value).toBeCloseTo(
+				expectedPaceValue
+			);
+		});
+
+		test('handles zero time input "00:00" correctly', () => {
+			const distanceInKilometers = 10; // 10 km
+			const timeInput = '00:00'; // 0 minutes
+			const parsedTime = parseTimeInput(timeInput);
+			const totalTimeInMinutes = parsedTime.hours * 60 + parsedTime.minutes;
+			const expectedPaceValue = totalTimeInMinutes / distanceInKilometers;
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)).toStrictEqual(
+				new Pace(expectedPaceValue)
+			);
+		});
+
+		test('handles null distance correctly', () => {
+			const distanceInKilometers = null;
+			const timeInput = '00:50';
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)).toStrictEqual(new Pace(0));
+		});
+
+		test('handles null time input correctly', () => {
+			const distanceInKilometers = 10;
+			const timeInput = null;
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)).toStrictEqual(new Pace(0));
+		});
+
+		test('handles null distance and null time input correctly', () => {
+			const distanceInKilometers = null;
+			const timeInput = null;
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)).toStrictEqual(new Pace(0));
+		});
+
+		test('handles zero distance correctly with valid time, resulting in Infinity pace', () => {
+			const distanceInKilometers = 0; // 0 km
+			const timeInput = '00:50'; // 50 minutes
+			const parsedTime = parseTimeInput(timeInput);
+			const totalTimeInMinutes = parsedTime.hours * 60 + parsedTime.minutes;
+			const expectedPaceValue = totalTimeInMinutes / distanceInKilometers; // 50 / 0 results in Infinity
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)?.value).toBe(
+				expectedPaceValue
+			);
+		});
+
+		// Note: The behavior for 0 distance and "00:00" time input
+		// will depend on how 0/0 is handled. JavaScript's result is NaN.
+		test('handles zero distance and zero time input "00:00" correctly, resulting in NaN pace', () => {
+			const distanceInKilometers = 0; // 0 km
+			const timeInput = '00:00'; // 0 minutes
+			expect(Pace.fromDistanceAndTime(distanceInKilometers, timeInput)?.value).toBeNaN();
 		});
 	});
 });
