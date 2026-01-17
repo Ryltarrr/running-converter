@@ -5,6 +5,7 @@
 	const menuItems = [
 		{ label: 'Convertisseur', link: '/' },
 		{ label: 'VMA', link: '/mas' },
+		{ label: 'Intervalles', link: '/interval-calculator' },
 		{ label: 'Estimation de course', link: '/race-predictor' },
 		{ label: 'Estimation de vitesse', link: '/speed-predictor' }
 	];
