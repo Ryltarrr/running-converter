@@ -1,15 +1,23 @@
 <script lang="ts">
 	import { Pace, possibleSeconds } from '$lib/pace';
 	import { Speed } from '$lib/speed';
+	import { DEFAULT_DISTANCES, timeToDoDistance, translateDistanceName } from '$lib/distance';
 
 	let speedInput = $state(0);
 	let paceMinutesInput = $state(0);
 	let paceSecondsInput = $state(0);
+	let customDistance = $state<number | null>(null);
+
+	let raceTimes = $derived.by(() => {
+		if (speedInput <= 0) return {};
+		return timeToDoDistance(new Speed(speedInput), customDistance);
+	});
 
 	function handleSpeedInput(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
 		if (!event.target) return;
 		const { value } = event.target as HTMLInputElement;
-		const pace = new Speed(Number(value)).convertTo('pace') as Pace;
+		speedInput = Number(value);
+		const pace = new Speed(speedInput).convertTo('pace') as Pace;
 		const { minutes, seconds } = pace.asMinutesAndSeconds();
 		paceMinutesInput = minutes;
 		paceSecondsInput = seconds;
@@ -71,4 +79,31 @@
 			</select>
 		</div>
 	</div>
+
+	<h2 class="mb-3 text-xl font-semibold">Temps de course</h2>
+	<div class="mb-5">
+		<label for="custom-distance" class="block">Distance personnalisée (km)</label>
+		<input id="custom-distance" type="number" class="block w-full" bind:value={customDistance} />
+	</div>
+	<table class="w-full table-auto">
+		<thead>
+			<tr>
+				<th class="text-left">Distance</th>
+				<th class="text-left">Temps</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each Object.entries(raceTimes) as [distance, time]}
+				<tr>
+					<td>{translateDistanceName(distance)}</td>
+					<td>{time}</td>
+				</tr>
+			{:else}
+				<tr>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
 </main>
